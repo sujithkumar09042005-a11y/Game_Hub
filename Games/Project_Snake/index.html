@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A classic Snake game built with JavaScript and HTML5 Canvas.">
+    <title>Snake Game</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <h1 id="game-title">🐍 Snake Game</h1>
+
+    <div id="score-board">
+        <span>Score:</span>
+        <span id="score-value">0</span>
+    </div>
+
+    <div id="difficulty-bar">
+        <span class="diff-label">Difficulty:</span>
+        <button class="diff-btn" data-speed="140" id="btn-easy">🟢 Easy</button>
+        <button class="diff-btn active" data-speed="100" id="btn-medium">🟡 Medium</button>
+        <button class="diff-btn" data-speed="60" id="btn-hard">🔴 Hard</button>
+    </div>
+
+    <div id="canvas-wrapper">
+        <canvas id="game-board" width="800" height="500"></canvas>
+    </div>
+
+    <button id="restart-btn" style="display:none;">↻ Play Again</button>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

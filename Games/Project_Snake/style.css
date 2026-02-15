@@ -1,0 +1,174 @@
+/* ── Reset & Base ────────────────────────────────── */
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+    font-family: 'Outfit', sans-serif;
+    color: #e0e0e0;
+    gap: 16px;
+    padding: 20px;
+}
+
+/* ── Title ───────────────────────────────────────── */
+#game-title {
+    font-size: 2.6rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    background: linear-gradient(90deg, #00f260, #0575e6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: none;
+    animation: titlePulse 3s ease-in-out infinite alternate;
+}
+
+@keyframes titlePulse {
+    0% {
+        filter: brightness(1);
+    }
+
+    100% {
+        filter: brightness(1.35);
+    }
+}
+
+/* ── Score Board ─────────────────────────────────── */
+#score-board {
+    font-size: 1.3rem;
+    font-weight: 600;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.06);
+    padding: 8px 24px;
+    border-radius: 12px;
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+#score-value {
+    color: #00f260;
+    font-size: 1.5rem;
+    min-width: 36px;
+    text-align: center;
+    transition: transform 0.15s ease;
+}
+
+#score-value.bump {
+    transform: scale(1.4);
+}
+
+/* ── Difficulty Bar ──────────────────────────────── */
+#difficulty-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.06);
+    padding: 8px 20px;
+    border-radius: 12px;
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.diff-label {
+    font-weight: 600;
+    font-size: 1rem;
+    margin-right: 4px;
+    color: #ccc;
+}
+
+.diff-btn {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    padding: 6px 18px;
+    border: 2px solid rgba(255, 255, 255, 0.12);
+    border-radius: 8px;
+    background: transparent;
+    color: #ccc;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.diff-btn:hover {
+    border-color: rgba(0, 242, 96, 0.4);
+    color: #fff;
+}
+
+.diff-btn.active {
+    background: rgba(0, 242, 96, 0.15);
+    border-color: #00f260;
+    color: #00f260;
+    box-shadow: 0 0 12px rgba(0, 242, 96, 0.25);
+}
+
+/* ── Canvas ──────────────────────────────────────── */
+#canvas-wrapper {
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow:
+        0 0 20px rgba(0, 242, 96, 0.25),
+        0 0 60px rgba(5, 117, 230, 0.15);
+    border: 2px solid rgba(0, 242, 96, 0.3);
+    transition: box-shadow 0.3s ease;
+}
+
+#canvas-wrapper:hover {
+    box-shadow:
+        0 0 30px rgba(0, 242, 96, 0.35),
+        0 0 80px rgba(5, 117, 230, 0.25);
+}
+
+#game-board {
+    display: block;
+    background: #1a1a2e;
+}
+
+/* ── Restart Button ──────────────────────────────── */
+#restart-btn {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 600;
+    padding: 12px 36px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    background: linear-gradient(135deg, #00f260, #0575e6);
+    color: #fff;
+    letter-spacing: 1px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 4px 20px rgba(0, 242, 96, 0.3);
+    animation: fadeIn 0.4s ease;
+}
+
+#restart-btn:hover {
+    transform: translateY(-2px) scale(1.04);
+    box-shadow: 0 6px 28px rgba(0, 242, 96, 0.45);
+}
+
+#restart-btn:active {
+    transform: scale(0.97);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
