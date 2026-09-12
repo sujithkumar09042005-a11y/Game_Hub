@@ -4,38 +4,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="A classic Snake game built with JavaScript and HTML5 Canvas.">
-    <title>Snake Game</title>
+    <meta name="description" content="Cyberpunk Data Serpent - Infiltrate firewalls and harvest corrupted memory packets.">
+    <title>DATA SERPENT // Cyberpunk Snake Protocol</title>
+    <!-- Master Cyber Hub Favicons -->
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32x32.png?v=401">
+    <link rel="icon" type="image/png" sizes="64x64" href="../../assets/favicon-64x64.png?v=401">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png?v=401">
+    <link rel="shortcut icon" href="../../favicon.ico?v=401">
+    <link rel="stylesheet" href="../../cyberpunk-core.css?v=303">
+    <link rel="stylesheet" href="style.css?v=303">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
 </head>
 
-<body>
-    <a href="../../index.html"
-        style="position: absolute; top: 20px; left: 20px; text-decoration: none; color: white; font-family: sans-serif; background: rgba(0,0,0,0.5); padding: 10px 20px; border-radius: 5px; border: 1px solid white; z-index: 1000;">&larr;
-        Back to Hub</a>
-    <h1 id="game-title">🐍 Snake Game</h1>
+<body class="cyber-theme cyber-grid-bg cyber-scanlines">
+    <!-- HUD Back Button -->
+    <a href="../../index.html" class="cyber-hud-back">ABORT_WORM // HUB</a>
 
-    <div id="score-board">
-        <span>Score:</span>
-        <span id="score-value">0</span>
+    <!-- Top Right HUD Controls -->
+    <div class="hud-top-actions">
+        <button id="pause-btn" class="hud-toggle-btn" title="Toggle Pause (P)">[PAUSE: P]</button>
+        <button id="hud-audio-toggle" class="hud-toggle-btn hud-audio-toggle" title="Toggle Sound">[VOL: ON]</button>
+        <button id="hud-crt-toggle" class="hud-toggle-btn hud-crt-toggle" title="Toggle CRT Scanlines">[CRT: ON]</button>
     </div>
 
-    <div id="difficulty-bar">
-        <span class="diff-label">Difficulty:</span>
-        <button class="diff-btn" data-speed="140" id="btn-easy">🟢 Easy</button>
-        <button class="diff-btn active" data-speed="100" id="btn-medium">🟡 Medium</button>
-        <button class="diff-btn" data-speed="60" id="btn-hard">🔴 Hard</button>
+    <div class="game-header-row">
+        <img src="assets/snake-icon.png?v=302" alt="Data Serpent Emblem" class="header-emblem-mini emblem-cyan">
+        <div class="cyber-badge">WORM INFILTRATION // SECTOR 03</div>
+    </div>
+    <h1 id="game-title" class="cyber-glitch" data-text="DATA // SERPENT">DATA <span class="highlight">// SERPENT</span></h1>
+
+    <!-- Score HUD with Personal Best Record -->
+    <div id="score-board" class="cyber-chamfer-sm">
+        <div class="score-stat">
+            <span class="score-label">BYTES_HARVESTED:</span>
+            <span id="score-value">0</span>
+        </div>
+        <div class="score-divider">|</div>
+        <div class="score-stat">
+            <span class="score-label">RECORD:</span>
+            <span id="best-score-value" class="neon-cyan">0</span>
+        </div>
     </div>
 
-    <div id="canvas-wrapper">
+    <!-- Difficulty Control Bar -->
+    <div id="difficulty-bar" class="cyber-chamfer-sm">
+        <span class="diff-label">> FREQUENCY:</span>
+        <button class="diff-btn cyber-chamfer-sm" data-speed="140" id="btn-easy">
+            <span class="diff-dot green"></span> LOW_BANDWIDTH
+        </button>
+        <button class="diff-btn active cyber-chamfer-sm" data-speed="100" id="btn-medium">
+            <span class="diff-dot yellow"></span> STANDARD_FREQ
+        </button>
+        <button class="diff-btn cyber-chamfer-sm" data-speed="60" id="btn-hard">
+            <span class="diff-dot red"></span> OVERCLOCK_GHZ
+        </button>
+    </div>
+
+    <!-- Terminal Canvas Wrapper -->
+    <div id="canvas-wrapper" class="cyber-chamfer">
         <canvas id="game-board" width="800" height="500"></canvas>
+        <!-- Pause Overlay -->
+        <div id="pause-overlay" class="cyber-pause-overlay" style="display: none;">
+            <div class="pause-title">PAUSED</div>
+            <div class="pause-subtitle">> LINK SUSPENDED // PRESS P OR TAP TO RESUME &lt;</div>
+        </div>
     </div>
 
-    <button id="restart-btn" style="display:none;">↻ Play Again</button>
+    <!-- Mobile Virtual Touch D-Pad -->
+    <div class="virtual-dpad" id="virtual-dpad" aria-label="Touch Directional Pad">
+        <button class="dpad-btn dpad-up" data-dir="ArrowUp" aria-label="Up">▲</button>
+        <button class="dpad-btn dpad-left" data-dir="ArrowLeft" aria-label="Left">◀</button>
+        <button class="dpad-btn dpad-down" data-dir="ArrowDown" aria-label="Down">▼</button>
+        <button class="dpad-btn dpad-right" data-dir="ArrowRight" aria-label="Right">▶</button>
+    </div>
 
+    <button id="restart-btn" class="cyber-chamfer-sm" style="display:none;">
+        &gt; RE-INJECT WORM THREAD
+    </button>
+
+    <script src="../../cyberpunk-system.js"></script>
     <script src="script.js"></script>
 </body>
 

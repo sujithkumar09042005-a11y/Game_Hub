@@ -6,25 +6,88 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description"
-        content="A premium Tetris game with a minimalist design inspired by Apple and Nothing. Play the classic block-stacking game with immersive sound effects.">
-    <title>Tetris</title>
+        content="Cyber Stack - High-density cyberpunk neural core memory defragmentation game.">
+    <title>CYBER STACK // Cyberpunk Tetris Protocol</title>
+    <!-- Master Cyber Hub Favicons -->
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32x32.png?v=401">
+    <link rel="icon" type="image/png" sizes="64x64" href="../../assets/favicon-64x64.png?v=401">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png?v=401">
+    <link rel="shortcut icon" href="../../favicon.ico?v=401">
+    <link rel="stylesheet" href="../../cyberpunk-core.css?v=303">
+    <link rel="stylesheet" href="./style.css?v=303">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet" href="./style.css">
 </head>
 
-<body>
-    <a href="../../index.html"
-        style="position: absolute; top: 20px; left: 20px; text-decoration: none; color: white; font-family: sans-serif; background: rgba(0,0,0,0.5); padding: 10px 20px; border-radius: 5px; border: 1px solid white; z-index: 1000;">&larr;
-        Back to Hub</a>
-    <h1>Tetris</h1>
-    <h2 id="score">Score: 0</h2>
-    <div class="game-container">
-        <canvas id="tetris" width="240" height="480"></canvas>
+<body class="cyber-theme cyber-grid-bg cyber-scanlines">
+    <!-- HUD Back Button -->
+    <a href="../../index.html" class="cyber-hud-back">ABORT_STACK // HUB</a>
+
+    <!-- Top Right HUD Controls -->
+    <div class="hud-top-actions">
+        <button id="pause-btn" class="hud-toggle-btn" title="Toggle Pause (P)">[PAUSE: P]</button>
+        <button id="hud-audio-toggle" class="hud-toggle-btn hud-audio-toggle" title="Toggle Sound">[VOL: ON]</button>
+        <button id="hud-crt-toggle" class="hud-toggle-btn hud-crt-toggle" title="Toggle CRT Scanlines">[CRT: ON]</button>
     </div>
+
+    <div class="game-header-row">
+        <img src="assets/tetris-icon.png?v=302" alt="Cyber Stack Emblem" class="header-emblem-mini emblem-yellow">
+        <div class="cyber-badge">MEMORY DEFRAG // SECTOR 04</div>
+    </div>
+    <h1 id="game-title" class="cyber-glitch" data-text="CYBER // STACK">CYBER <span class="highlight">// STACK</span></h1>
+
+    <!-- Score Bar -->
+    <div class="score-bar-wrapper">
+        <h2 id="score" class="cyber-chamfer-sm">DEFRAG_SCORE: 0</h2>
+    </div>
+
+    <!-- Main Tetris Layout (Board + Next Piece Sidebar) -->
+    <div class="tetris-layout">
+        <div class="game-container cyber-chamfer">
+            <canvas id="tetris" width="240" height="480"></canvas>
+            <!-- Pause Overlay -->
+            <div id="pause-overlay" class="cyber-pause-overlay" style="display: none;">
+                <div class="pause-title">PAUSED</div>
+                <div class="pause-subtitle">> LINK SUSPENDED // PRESS P TO RESUME &lt;</div>
+            </div>
+        </div>
+
+        <!-- Next Piece & High Score Sidebar -->
+        <aside class="tetris-sidebar">
+            <div class="sidebar-box cyber-chamfer-sm">
+                <span class="sidebar-title">> NEXT PIECE</span>
+                <div class="next-canvas-wrapper">
+                    <canvas id="next-canvas" width="96" height="96"></canvas>
+                </div>
+            </div>
+
+            <div class="sidebar-box cyber-chamfer-sm">
+                <span class="sidebar-title">> HIGH SCORE</span>
+                <span id="best-score" class="neon-cyan sidebar-val">0</span>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Mobile On-Screen Controls -->
+    <div class="tetris-mobile-controls" id="tetris-mobile-controls" aria-label="Mobile Controls">
+        <button class="mobile-ctrl-btn" id="ctrl-left" aria-label="Left">◀</button>
+        <button class="mobile-ctrl-btn" id="ctrl-rotate" aria-label="Rotate">↻</button>
+        <button class="mobile-ctrl-btn" id="ctrl-right" aria-label="Right">▶</button>
+        <button class="mobile-ctrl-btn" id="ctrl-soft" aria-label="Soft Drop">▼</button>
+        <button class="mobile-ctrl-btn" id="ctrl-hard" aria-label="Hard Drop">⤓</button>
+    </div>
+
+    <!-- Controls Readout -->
+    <div class="controls-legend cyber-chamfer-sm">
+        <span>[&#8592; / &#8594;] SHIFT</span>
+        <span>[&#8593;] ROTATE</span>
+        <span>[&#8595;] SOFT DROP</span>
+        <span>[SPACE] HARD DROP</span>
+        <span>[P] PAUSE</span>
+    </div>
+
+    <script src="../../cyberpunk-system.js"></script>
+    <script src="./script.js"></script>
 </body>
-<script src="./script.js"></script>
 
 </html>

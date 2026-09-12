@@ -1,0 +1,426 @@
+/* ==========================================================================
+   CYBERPUNK / GLITCH DESIGN SYSTEM - CORE TOKENS & UTILITIES
+   "High-Tech, Low-Life" Design Language
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Orbitron:wght@400;600;700;800;900&family=Share+Tech+Mono&display=swap');
+
+:root {
+  /* Colors (Dark Mode Void) */
+  --cyber-bg: #0a0a0f;
+  --cyber-fg: #e0e0e0;
+  --cyber-card: #12121a;
+  --cyber-muted: #1c1c2e;
+  --cyber-muted-fg: #6b7280;
+  --cyber-border: #2a2a3a;
+  --cyber-input: #12121a;
+  
+  /* Primary & Secondary Neon Accents */
+  --cyber-accent: #00ff88;          /* Electric Matrix Green */
+  --cyber-accent-secondary: #ff00ff;/* Hot Magenta */
+  --cyber-accent-tertiary: #00d4ff; /* Electric Cyan */
+  --cyber-yellow: #ffe600;          /* Warning Neon Yellow */
+  --cyber-destructive: #ff3366;     /* Destructive Laser Red */
+
+  /* Typography */
+  --font-heading: 'Orbitron', -apple-system, monospace;
+  --font-body: 'JetBrains Mono', monospace;
+  --font-mono: 'Share Tech Mono', monospace;
+
+  /* Neon Glow Stacks */
+  --box-shadow-neon: 0 0 5px #00ff88, 0 0 12px rgba(0, 255, 136, 0.4);
+  --box-shadow-neon-sm: 0 0 3px #00ff88, 0 0 6px rgba(0, 255, 136, 0.3);
+  --box-shadow-neon-lg: 0 0 10px #00ff88, 0 0 25px rgba(0, 255, 136, 0.6), 0 0 50px rgba(0, 255, 136, 0.25);
+  --box-shadow-neon-secondary: 0 0 5px #ff00ff, 0 0 15px rgba(255, 0, 255, 0.5), 0 0 35px rgba(255, 0, 255, 0.2);
+  --box-shadow-neon-tertiary: 0 0 5px #00d4ff, 0 0 15px rgba(0, 212, 255, 0.5), 0 0 35px rgba(0, 212, 255, 0.2);
+  --box-shadow-neon-destructive: 0 0 5px #ff3366, 0 0 15px rgba(255, 51, 102, 0.5);
+
+  /* Chamfer Clip-paths (Industrial Brutalism) */
+  --clip-chamfer: polygon(
+    0 12px, 12px 0,
+    calc(100% - 12px) 0, 100% 12px,
+    100% calc(100% - 12px), calc(100% - 12px) 100%,
+    12px 100%, 0 calc(100% - 12px)
+  );
+  --clip-chamfer-sm: polygon(
+    0 6px, 6px 0,
+    calc(100% - 6px) 0, 100% 6px,
+    100% calc(100% - 6px), calc(100% - 6px) 100%,
+    6px 100%, 0 calc(100% - 6px)
+  );
+  --clip-chamfer-diag: polygon(
+    0 0,
+    calc(100% - 14px) 0, 100% 14px,
+    100% 100%,
+    14px 100%, 0 calc(100% - 14px)
+  );
+
+  /* Motion Curves */
+  --ease-digital: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Base Body Styles for Cyberpunk Environment */
+.cyber-theme {
+  background-color: var(--cyber-bg);
+  color: var(--cyber-fg);
+  font-family: var(--font-body);
+}
+
+/* CRT Scanlines Screen Overlay */
+.cyber-scanlines::after {
+  content: " ";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.35) 2px,
+    rgba(0, 0, 0, 0.35) 4px
+  );
+  pointer-events: none;
+  z-index: 9998;
+}
+
+/* Subtle Vignette */
+.cyber-scanlines::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: radial-gradient(circle at center, transparent 60%, rgba(5, 5, 10, 0.85) 100%);
+  pointer-events: none;
+  z-index: 9997;
+}
+
+/* Tech Circuit / Grid Matrix Background */
+.cyber-grid-bg {
+  background-color: var(--cyber-bg);
+  background-image:
+    linear-gradient(rgba(0, 255, 136, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 255, 136, 0.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* Chamfer Utilities */
+.cyber-chamfer {
+  clip-path: var(--clip-chamfer);
+}
+
+.cyber-chamfer-sm {
+  clip-path: var(--clip-chamfer-sm);
+}
+
+.cyber-chamfer-diag {
+  clip-path: var(--clip-chamfer-diag);
+}
+
+/* Glitch Typography & Chromatic Aberration */
+.cyber-glitch {
+  position: relative;
+  display: inline-block;
+}
+
+.cyber-glitch::before,
+.cyber-glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.cyber-glitch::before {
+  left: -2px;
+  text-shadow: -2px 0 var(--cyber-accent-secondary);
+  clip: rect(24px, 550px, 90px, 0);
+  animation: glitch-anim-1 3s infinite linear alternate-reverse;
+}
+
+.cyber-glitch::after {
+  left: 2px;
+  text-shadow: -2px 0 var(--cyber-accent-tertiary);
+  clip: rect(85px, 550px, 140px, 0);
+  animation: glitch-anim-2 2.5s infinite linear alternate-reverse;
+}
+
+@keyframes glitch-anim-1 {
+  0% { clip-path: inset(40% 0 61% 0); transform: skew(0.3deg); }
+  20% { clip-path: inset(92% 0 1% 0); transform: skew(-0.5deg); }
+  40% { clip-path: inset(10% 0 80% 0); transform: skew(0.8deg); }
+  60% { clip-path: inset(65% 0 15% 0); transform: skew(-0.3deg); }
+  80% { clip-path: inset(20% 0 50% 0); transform: skew(0.5deg); }
+  100% { clip-path: inset(70% 0 10% 0); transform: skew(0deg); }
+}
+
+@keyframes glitch-anim-2 {
+  0% { clip-path: inset(12% 0 78% 0); transform: skew(-0.4deg); }
+  20% { clip-path: inset(50% 0 30% 0); transform: skew(0.6deg); }
+  40% { clip-path: inset(80% 0 5% 0); transform: skew(-0.8deg); }
+  60% { clip-path: inset(25% 0 55% 0); transform: skew(0.3deg); }
+  80% { clip-path: inset(60% 0 25% 0); transform: skew(-0.5deg); }
+  100% { clip-path: inset(5% 0 85% 0); transform: skew(0deg); }
+}
+
+/* Blinking Terminal Cursor */
+.cyber-cursor-blink {
+  display: inline-block;
+  width: 9px;
+  height: 1.1em;
+  background-color: var(--cyber-accent);
+  vertical-align: middle;
+  margin-left: 4px;
+  animation: cyberBlink 1s step-end infinite;
+}
+
+@keyframes cyberBlink {
+  50% { opacity: 0; }
+}
+
+/* Standard Cyberpunk HUD Back Button */
+.cyber-hud-back {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--cyber-accent);
+  background: rgba(18, 18, 26, 0.85);
+  border: 1px solid var(--cyber-accent);
+  padding: 9px 18px;
+  clip-path: var(--clip-chamfer-sm);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 1000;
+  transition: all 0.2s var(--ease-digital);
+  box-shadow: var(--box-shadow-neon-sm);
+}
+
+.cyber-hud-back:hover {
+  background: var(--cyber-accent);
+  color: var(--cyber-bg);
+  box-shadow: var(--box-shadow-neon);
+  transform: translateY(-2px);
+}
+
+.cyber-hud-back::before {
+  content: "«";
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+
+/* Universal Cyber Badge */
+.cyber-badge {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  padding: 4px 10px;
+  border: 1px solid var(--cyber-border);
+  background: rgba(28, 28, 46, 0.6);
+  color: var(--cyber-muted-fg);
+  display: inline-block;
+}
+
+.cyber-badge.active {
+  border-color: var(--cyber-accent);
+  color: var(--cyber-accent);
+  box-shadow: var(--box-shadow-neon-sm);
+}
+
+/* Universal Game Header Emblem & Row */
+.game-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.85rem;
+  margin-bottom: 0.6rem;
+}
+
+.header-emblem-mini {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  display: inline-block;
+  transition: transform 0.25s ease, filter 0.25s ease, box-shadow 0.25s ease;
+}
+
+.header-emblem-mini.emblem-green {
+  border: 1.5px solid var(--cyber-accent);
+  box-shadow: 0 0 12px rgba(0, 255, 136, 0.45);
+}
+
+.header-emblem-mini.emblem-magenta {
+  border: 1.5px solid var(--cyber-accent-secondary);
+  box-shadow: 0 0 12px rgba(255, 0, 255, 0.5);
+}
+
+.header-emblem-mini.emblem-cyan {
+  border: 1.5px solid var(--cyber-accent-tertiary);
+  box-shadow: 0 0 12px rgba(0, 212, 255, 0.5);
+}
+
+.header-emblem-mini.emblem-yellow {
+  border: 1.5px solid #ffd700;
+  box-shadow: 0 0 12px rgba(255, 215, 0, 0.45);
+}
+
+.header-emblem-mini:hover {
+  transform: scale(1.12);
+}
+
+/* CRT Scanlines Disabled Modifier */
+body.no-scanlines::after {
+  display: none !important;
+}
+
+body.no-scanlines::before {
+  opacity: 0.35 !important;
+}
+
+/* HUD System Toggle Buttons */
+.hud-toggle-btn {
+  background: rgba(18, 18, 26, 0.9);
+  border: 1px solid var(--cyber-border);
+  color: var(--cyber-accent);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  padding: 4px 10px;
+  cursor: pointer;
+  clip-path: var(--clip-chamfer-sm);
+  transition: all 0.2s var(--ease-digital);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.hud-toggle-btn:hover {
+  border-color: var(--cyber-accent);
+  box-shadow: var(--box-shadow-neon-sm);
+  transform: translateY(-1px);
+}
+
+.hud-toggle-btn.off {
+  color: var(--cyber-muted-fg);
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: none;
+}
+
+/* Universal Cyber Pause Overlay */
+.cyber-pause-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 10, 15, 0.88);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 500;
+  animation: pauseFadeIn 0.2s ease;
+}
+
+@keyframes pauseFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.pause-title {
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  font-weight: 900;
+  letter-spacing: 0.18em;
+  color: var(--cyber-yellow);
+  text-shadow: 0 0 15px rgba(255, 230, 0, 0.6);
+  margin-bottom: 0.5rem;
+}
+
+.pause-subtitle {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--cyber-accent-tertiary);
+  letter-spacing: 0.15em;
+}
+
+/* Virtual Touch D-Pad for Mobile Gaming */
+.virtual-dpad {
+  display: none;
+  grid-template-areas:
+    ".    up    ."
+    "left .     right"
+    ".    down  .";
+  gap: 8px;
+  width: 170px;
+  margin: 12px auto 0;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+@media (max-width: 768px), (hover: none) and (pointer: coarse) {
+  .virtual-dpad {
+    display: grid;
+  }
+}
+
+.dpad-btn {
+  width: 48px;
+  height: 48px;
+  background: rgba(18, 18, 26, 0.9);
+  border: 1px solid var(--cyber-accent);
+  color: var(--cyber-accent);
+  font-family: var(--font-heading);
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  clip-path: var(--clip-chamfer-sm);
+  box-shadow: var(--box-shadow-neon-sm);
+  transition: all 0.1s ease;
+  touch-action: manipulation;
+}
+
+.dpad-btn:active {
+  background: var(--cyber-accent);
+  color: var(--cyber-bg);
+  transform: scale(0.92);
+}
+
+.dpad-up    { grid-area: up; }
+.dpad-left  { grid-area: left; }
+.dpad-down  { grid-area: down; }
+.dpad-right { grid-area: right; }
+
+/* Accessibility: Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .cyber-glitch::before,
+  .cyber-glitch::after {
+    animation: none;
+    clip: auto;
+    opacity: 0.7;
+  }
+  .cyber-cursor-blink {
+    animation: none;
+    opacity: 1;
+  }
+}
+

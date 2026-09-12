@@ -3,38 +3,82 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Memory Game</title>
-  <link rel="stylesheet" href="styles.css">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NEURAL SYNC // Cyberpunk Memory Protocol</title>
+  <!-- Master Cyber Hub Favicons -->
+  <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32x32.png?v=401">
+  <link rel="icon" type="image/png" sizes="64x64" href="../../assets/favicon-64x64.png?v=401">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png?v=401">
+  <link rel="shortcut icon" href="../../favicon.ico?v=401">
+  <link rel="stylesheet" href="../../cyberpunk-core.css?v=303">
+  <link rel="stylesheet" href="styles.css?v=303">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 </head>
 
-<body>
-  <a href="../../index.html"
-    style="position: absolute; top: 20px; left: 20px; text-decoration: none; color: white; font-family: sans-serif; background: rgba(0,0,0,0.5); padding: 10px 20px; border-radius: 5px; border: 1px solid white; z-index: 1000;">&larr;
-    Back to Hub</a>
+<body class="cyber-theme cyber-grid-bg cyber-scanlines">
+  <!-- HUD Back Button -->
+  <a href="../../index.html" class="cyber-hud-back">ABORT_LINK // HUB</a>
 
-  <div class="game-container">
-    <h1 id="level-title">Select Difficulty</h1>
-
-    <div id="difficulty-selector" class="control-panel">
-      <button id="easy" class="diff-btn">Easy</button>
-      <button id="medium" class="diff-btn">Medium</button>
-      <button id="hard" class="diff-btn">Hard</button>
-    </div>
-
-    <div class="row">
-      <div type="button" id="green" class="btn green"></div>
-      <div type="button" id="red" class="btn red"></div>
-    </div>
-
-    <div class="row">
-      <div type="button" id="yellow" class="btn yellow"></div>
-      <div type="button" id="blue" class="btn blue"></div>
-    </div>
+  <!-- Top Right HUD Controls -->
+  <div class="hud-top-actions">
+    <button id="hud-audio-toggle" class="hud-toggle-btn hud-audio-toggle" title="Toggle Sound">[VOL: ON]</button>
+    <button id="hud-crt-toggle" class="hud-toggle-btn hud-crt-toggle" title="Toggle CRT Scanlines">[CRT: ON]</button>
   </div>
+
+  <main class="game-container">
+    <div class="game-header-row">
+      <img src="assets/memory-icon.png?v=302" alt="Neural Sync Emblem" class="header-emblem-mini emblem-green">
+      <div class="terminal-badges-row">
+        <span class="cyber-badge">NEURAL CORE // SECTOR 01</span>
+        <span class="cyber-badge active" id="memory-best-badge">BEST RECORD: LVL 0</span>
+      </div>
+    </div>
+    <h1 id="level-title" class="glitch-text">SELECT FREQUENCY</h1>
+    <p class="terminal-subtext">> DECRYPT PATTERN MEMORY BUFFER</p>
+
+    <!-- Difficulty Control Panel -->
+    <div id="difficulty-selector" class="control-panel">
+      <button id="easy" class="diff-btn cyber-chamfer-sm" title="Recon Speed">
+        <span class="diff-prefix">&gt;</span> RECON [1000ms]
+      </button>
+      <button id="medium" class="diff-btn cyber-chamfer-sm" title="Tactical Speed">
+        <span class="diff-prefix">&gt;</span> TACTICAL [600ms]
+      </button>
+      <button id="hard" class="diff-btn cyber-chamfer-sm" title="Overclock Speed">
+        <span class="diff-prefix">&gt;</span> OVERCLOCK [300ms]
+      </button>
+    </div>
+
+    <!-- 4 Reactor Memory Nodes -->
+    <div class="reactor-grid">
+      <div class="row">
+        <div type="button" id="green" class="btn green cyber-chamfer" data-node="GREEN">
+          <span class="node-label">NODE // 01</span>
+          <div class="node-core"></div>
+        </div>
+        <div type="button" id="red" class="btn red cyber-chamfer" data-node="RED">
+          <span class="node-label">NODE // 02</span>
+          <div class="node-core"></div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div type="button" id="yellow" class="btn yellow cyber-chamfer" data-node="YELLOW">
+          <span class="node-label">NODE // 03</span>
+          <div class="node-core"></div>
+        </div>
+        <div type="button" id="blue" class="btn blue cyber-chamfer" data-node="BLUE">
+          <span class="node-label">NODE // 04</span>
+          <div class="node-core"></div>
+        </div>
+      </div>
+    </div>
+  </main>
 
   <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
     crossorigin="anonymous"></script>
+  <script src="../../cyberpunk-system.js"></script>
   <script src="./game.js"></script>
 </body>
 

@@ -1,4 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+/* ==========================================================================
+   CYBER STACK (TETRIS) - CYBERPUNK HUD STYLES
+   ========================================================================== */
 
 * {
     margin: 0;
@@ -12,169 +14,255 @@ body {
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    gap: 20px;
-    padding: 20px;
-    background-color: #000000;
-    font-family: 'Space Grotesk', sans-serif;
-    overflow: hidden;
+    gap: 12px;
+    padding: 24px 16px;
     position: relative;
+    overflow-x: hidden;
 }
 
-/* Nothing-inspired dot grid background */
-body::before {
-    content: '';
+/* ── Top HUD Actions ───────────────────────────────────────────────── */
+.hud-top-actions {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image:
-        radial-gradient(circle, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
-    background-size: 24px 24px;
-    pointer-events: none;
-    z-index: 0;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    gap: 8px;
+    z-index: 1000;
 }
 
-/* Subtle ambient glow — Nothing red */
-body::after {
-    content: '';
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    pointer-events: none;
-    background:
-        radial-gradient(ellipse at 50% 0%, rgba(215, 25, 33, 0.06) 0%, transparent 60%),
-        radial-gradient(ellipse at 50% 100%, rgba(255, 255, 255, 0.02) 0%, transparent 50%);
-    z-index: 0;
+.game-header-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.85rem;
+    margin-bottom: 0.4rem;
 }
 
-/* Title — Apple clean + Nothing geometric */
+.header-emblem-mini {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+    display: inline-block;
+    border: 1.5px solid #ffd700;
+    box-shadow: 0 0 14px rgba(255, 215, 0, 0.5);
+    transition: transform 0.25s ease, filter 0.25s ease;
+}
+
+.header-emblem-mini:hover {
+    transform: scale(1.15);
+    filter: drop-shadow(0 0 10px #ffd700);
+}
+
+/* ── Title ─────────────────────────────────────────────────────────── */
 h1 {
-    font-size: 2.8rem;
-    font-weight: 700;
+    font-family: var(--font-heading);
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 900;
     text-transform: uppercase;
     color: #ffffff;
-    letter-spacing: 12px;
-    z-index: 1;
+    letter-spacing: 0.16em;
     position: relative;
-    opacity: 0.95;
-    animation: titleFade 2s ease-out;
+    margin: 0.2rem 0;
+    text-shadow: 0 0 20px rgba(0, 255, 136, 0.4);
 }
 
-h1::after {
-    content: '';
-    display: block;
-    width: 40px;
-    height: 3px;
-    background: #D71921;
-    margin: 10px auto 0;
-    border-radius: 2px;
+h1 .highlight {
+    color: var(--cyber-accent);
 }
 
-@keyframes titleFade {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-
-    to {
-        opacity: 0.95;
-        transform: translateY(0);
-    }
+/* ── Score Readout ─────────────────────────────────────────────────── */
+.score-bar-wrapper {
+    display: flex;
+    justify-content: center;
 }
 
-/* Score — minimal, clean */
 h2 {
-    font-size: 1.1rem;
-    font-weight: 400;
-    color: rgba(255, 255, 255, 0.6);
-    letter-spacing: 4px;
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--cyber-accent);
+    letter-spacing: 0.15em;
     text-transform: uppercase;
-    z-index: 1;
-    position: relative;
-    transition: color 0.3s ease;
+    background: rgba(18, 18, 26, 0.9);
+    padding: 6px 18px;
+    border: 1px solid var(--cyber-border);
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.8);
+    transition: color 0.3s ease, border-color 0.3s ease;
 }
 
-/* Score pulse animation on update */
 h2.score-pulse {
-    animation: scorePulse 0.4s ease-out;
+    animation: defragPulse 0.35s ease-out;
 }
 
-@keyframes scorePulse {
-    0% {
-        transform: scale(1);
-        color: rgba(255, 255, 255, 0.6);
-    }
-
-    50% {
-        transform: scale(1.08);
-        color: #D71921;
-    }
-
-    100% {
-        transform: scale(1);
-        color: rgba(255, 255, 255, 0.6);
-    }
+@keyframes defragPulse {
+    0% { transform: scale(1); border-color: var(--cyber-border); }
+    50% { transform: scale(1.08); border-color: var(--cyber-accent); color: #ffffff; box-shadow: var(--box-shadow-neon); }
+    100% { transform: scale(1); border-color: var(--cyber-border); }
 }
 
-/* Game container — glassmorphic panel */
+/* ── Main Tetris Layout (Board + Sidebar) ──────────────────────────── */
+.tetris-layout {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 16px;
+    max-width: 100%;
+}
+
 .game-container {
     position: relative;
-    z-index: 1;
-    padding: 16px;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 20px;
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    padding: 10px;
+    background: rgba(18, 18, 26, 0.85);
+    border: 2px solid var(--cyber-border);
     box-shadow:
-        0 8px 32px rgba(0, 0, 0, 0.4),
-        inset 0 1px 0 rgba(255, 255, 255, 0.05);
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        0 0 25px rgba(0, 255, 136, 0.2),
+        inset 0 0 25px rgba(0, 0, 0, 0.9);
+    transition: all 0.3s var(--ease-digital);
 }
 
 .game-container:hover {
-    border-color: rgba(215, 25, 33, 0.2);
+    border-color: var(--cyber-accent);
     box-shadow:
-        0 12px 48px rgba(0, 0, 0, 0.5),
-        0 0 0 1px rgba(215, 25, 33, 0.1),
-        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        var(--box-shadow-neon),
+        inset 0 0 35px rgba(0, 255, 136, 0.15);
 }
 
 /* Canvas */
 #tetris {
     display: block;
-    border-radius: 12px;
-    background: #0a0a0a;
-    transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    background: #0a0a0f;
+    transition: transform 0.1s ease;
 }
 
-/* Game over overlay — Apple-like modal */
+/* ── Sidebar ───────────────────────────────────────────────────────── */
+.tetris-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 110px;
+}
+
+.sidebar-box {
+    background: rgba(18, 18, 26, 0.9);
+    border: 1px solid var(--cyber-border);
+    padding: 10px 8px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.8);
+}
+
+.sidebar-title {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: var(--cyber-muted-fg);
+    margin-bottom: 8px;
+}
+
+.sidebar-val {
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
+    font-weight: 800;
+}
+
+.next-canvas-wrapper {
+    width: 80px;
+    height: 80px;
+    background: #0a0a0f;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#next-canvas {
+    display: block;
+    width: 80px;
+    height: 80px;
+}
+
+/* ── Mobile Touch Controls ─────────────────────────────────────────── */
+.tetris-mobile-controls {
+    display: none;
+    gap: 10px;
+    margin-top: 4px;
+    justify-content: center;
+    width: 100%;
+    max-width: 320px;
+}
+
+@media (max-width: 768px), (hover: none) and (pointer: coarse) {
+    .tetris-mobile-controls {
+        display: flex;
+    }
+}
+
+.mobile-ctrl-btn {
+    flex: 1;
+    height: 46px;
+    background: rgba(18, 18, 26, 0.9);
+    border: 1px solid var(--cyber-accent);
+    color: var(--cyber-accent);
+    font-family: var(--font-heading);
+    font-size: 1.15rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    clip-path: var(--clip-chamfer-sm);
+    box-shadow: var(--box-shadow-neon-sm);
+    transition: all 0.1s ease;
+    touch-action: manipulation;
+}
+
+.mobile-ctrl-btn:active {
+    background: var(--cyber-accent);
+    color: var(--cyber-bg);
+    transform: scale(0.92);
+}
+
+/* Controls Legend */
+.controls-legend {
+    display: flex;
+    gap: 10px;
+    background: rgba(18, 18, 26, 0.7);
+    padding: 6px 14px;
+    border: 1px solid var(--cyber-border);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--cyber-muted-fg);
+    letter-spacing: 0.1em;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+/* ── Game Over Modal Overlay ───────────────────────────────────────── */
 .game-over {
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: rgba(20, 20, 20, 0.95);
-    backdrop-filter: blur(40px);
-    -webkit-backdrop-filter: blur(40px);
-    padding: 48px 60px;
-    border-radius: 24px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.6);
-    z-index: 100;
+    background: rgba(10, 10, 15, 0.97);
+    border: 2px solid var(--cyber-destructive);
+    box-shadow: 0 0 60px rgba(0, 0, 0, 0.9), var(--box-shadow-neon-destructive);
+    padding: 32px 38px;
+    z-index: 1000;
     text-align: center;
-    animation: modalIn 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    animation: modalSlide 0.3s var(--ease-digital);
+    width: 90%;
+    max-width: 400px;
 }
 
-@keyframes modalIn {
+@keyframes modalSlide {
     from {
         opacity: 0;
-        transform: translate(-50%, -50%) scale(0.92);
+        transform: translate(-50%, -46%) scale(0.95);
     }
-
     to {
         opacity: 1;
         transform: translate(-50%, -50%) scale(1);
@@ -182,89 +270,120 @@ h2.score-pulse {
 }
 
 .game-over h2 {
-    font-size: 1.8rem;
-    font-weight: 600;
-    color: #ffffff;
-    letter-spacing: 3px;
-    margin-bottom: 12px;
-    opacity: 1;
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--cyber-destructive);
+    letter-spacing: 0.12em;
+    margin-bottom: 8px;
+    background: none;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+    text-shadow: 0 0 15px rgba(255, 51, 102, 0.8);
 }
 
 .game-over p {
-    color: rgba(255, 255, 255, 0.5);
-    font-size: 1.1rem;
-    font-weight: 400;
-    margin-bottom: 32px;
-    letter-spacing: 2px;
+    font-family: var(--font-mono);
+    color: var(--cyber-muted-fg);
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    margin-bottom: 8px;
 }
 
-/* Restart button — Apple rounded, Nothing red accent */
+.final-score-text {
+    font-family: var(--font-heading) !important;
+    font-size: 1.1rem !important;
+    color: var(--cyber-accent) !important;
+    text-shadow: 0 0 10px rgba(0, 255, 136, 0.6);
+    margin-bottom: 20px !important;
+}
+
+/* Restart Button */
 .restart-btn {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 0.95rem;
-    font-weight: 600;
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
     text-transform: uppercase;
-    letter-spacing: 3px;
-    padding: 14px 44px;
+    padding: 11px 28px;
     border: none;
-    border-radius: 50px;
     cursor: pointer;
-    background: #D71921;
-    color: #ffffff;
-    position: relative;
-    overflow: hidden;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 4px 24px rgba(215, 25, 33, 0.3);
+    background: var(--cyber-accent);
+    color: var(--cyber-bg);
+    box-shadow: var(--box-shadow-neon);
+    transition: all 0.2s var(--ease-digital);
 }
 
 .restart-btn:hover {
-    transform: scale(1.05);
-    box-shadow: 0 8px 32px rgba(215, 25, 33, 0.5);
-    background: #e6222b;
+    background: #ffffff;
+    box-shadow: var(--box-shadow-neon-lg);
+    transform: translateY(-2px);
 }
 
-.restart-btn:active {
-    transform: scale(0.97);
-    box-shadow: 0 2px 12px rgba(215, 25, 33, 0.3);
-}
+/* ── Responsive Adaptations ────────────────────────────────────────── */
+@media (max-width: 600px) {
+    body {
+        padding: 16px 10px;
+        gap: 8px;
+    }
 
-/* Shimmer on hover */
-.restart-btn::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
-    transition: left 0.5s ease;
-}
+    .hud-top-actions {
+        top: 14px;
+        right: 14px;
+        gap: 6px;
+    }
 
-.restart-btn:hover::before {
-    left: 100%;
-}
+    .cyber-hud-back {
+        top: 14px;
+        left: 14px;
+        padding: 6px 12px;
+        font-size: 0.72rem;
+    }
 
-/* Responsive design */
-@media (max-width: 768px) {
     h1 {
-        font-size: 2rem;
-        letter-spacing: 8px;
+        font-size: 1.6rem;
+        margin-top: 1.8rem;
     }
 
-    h2 {
-        font-size: 0.9rem;
-    }
-
-    .game-container {
-        padding: 12px;
+    .tetris-layout {
+        gap: 10px;
     }
 
     #tetris {
-        width: 240px !important;
-        height: 480px !important;
+        width: 200px !important;
+        height: 400px !important;
     }
 
-    .game-over {
-        padding: 36px 40px;
+    .tetris-sidebar {
+        width: 90px;
+    }
+
+    .next-canvas-wrapper {
+        width: 65px;
+        height: 65px;
+    }
+
+    #next-canvas {
+        width: 65px;
+        height: 65px;
+    }
+
+    .controls-legend {
+        font-size: 0.65rem;
+        gap: 6px;
+    }
+}
+
+@media (max-width: 360px) {
+    .tetris-layout {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .tetris-sidebar {
+        flex-direction: row;
+        width: 100%;
+        justify-content: center;
     }
 }

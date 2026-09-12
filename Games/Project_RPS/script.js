@@ -3,14 +3,33 @@
 
   const CHOICES = ['rock', 'paper', 'scissors'];
   const CHOICE_IMGS = {
-    rock: 'assets/rock.png',
-    paper: 'assets/paper.png',
-    scissors: 'assets/scissors.png',
+    rock: 'assets/rock.png?v=301',
+    paper: 'assets/paper.png?v=301',
+    scissors: 'assets/scissors.png?v=301',
   };
+
+  const AI_TAUNTS_WIN = [
+    '> SENTINEL_AI: "STATISTICAL ANOMALY DETECTED IN YOUR FAVOR."',
+    '> SENTINEL_AI: "REROOTING TACTICAL MATRIX. DO NOT GET COMFORTABLE."',
+    '> SENTINEL_AI: "NEURAL REFLEX NOTED. RE-EVALUATING THREAT PROFILE."',
+    '> SENTINEL_AI: "IMPRESSIVE EXPLOIT, NETRUNNER."'
+  ];
+  const AI_TAUNTS_LOSS = [
+    '> SENTINEL_AI: "YOUR SELECTION WAS PROJECTED 120ms AGO."',
+    '> SENTINEL_AI: "SUBROUTINE EXECUTION COMPLETE. REBOOT YOUR STRATEGY."',
+    '> SENTINEL_AI: "HUMAN PREDICTABILITY REMAINS A FATAL VULNERABILITY."',
+    '> SENTINEL_AI: "CALCULATED WITH 99.4% PROBABILITY."'
+  ];
+  const AI_TAUNTS_DRAW = [
+    '> SENTINEL_AI: "PARALLEL CONVERGENCE DETECTED. RETRYING."',
+    '> SENTINEL_AI: "SYNAPSE MATCH EQUALIZED. CHOOSE AGAIN."',
+    '> SENTINEL_AI: "MIRRORED FREQUENCY DETECTED."'
+  ];
 
   let userScore = 0;
   let computerScore = 0;
-  let roundsToWin = 1; // best of 1 => 1, best of 3 => 2, best of 5 => 3
+  let currentStreak = 0;
+  let roundsToWin = 1;
   let isAnimating = false;
 
   const landingPage = document.getElementById('landing-page');
@@ -18,7 +37,10 @@
   const matchInfo = document.getElementById('match-info');
   const userScore_span = document.getElementById('user-score');
   const computerScore_span = document.getElementById('computer-score');
+  const streakNum_span = document.getElementById('streak-num');
+  const bestStreak_span = document.getElementById('best-streak-num');
   const result_p = document.getElementById('result-message');
+  const aiTaunt_p = document.getElementById('ai-taunt');
   const userBattleChoice = document.getElementById('user-battle-choice');
   const userChoiceImg = document.getElementById('user-choice-img');
   const compBattleChoice = document.getElementById('comp-battle-choice');
@@ -33,6 +55,14 @@
   const pointSfx = document.getElementById('point-sfx');
   const gameoverSfx = document.getElementById('gameover-sfx');
 
+  function updateStreakUI() {
+    if (streakNum_span) streakNum_span.textContent = currentStreak;
+    if (bestStreak_span && window.CyberSystem && window.CyberSystem.Scores) {
+      const best = window.CyberSystem.Scores.get('rps');
+      bestStreak_span.textContent = `RECORD: ${best}`;
+    }
+  }
+
   function convertToWord(choice) {
     if (!choice || typeof choice !== 'string') return '';
     return choice.charAt(0).toUpperCase() + choice.slice(1).toLowerCase();
@@ -42,7 +72,12 @@
     return CHOICES[Math.floor(Math.random() * 3)];
   }
 
+  function getRandomTaunt(taunts) {
+    return taunts[Math.floor(Math.random() * taunts.length)];
+  }
+
   function playPointSfx() {
+    if (window.CyberSystem && window.CyberSystem.Audio && window.CyberSystem.Audio.isMuted()) return;
     if (pointSfx) {
       pointSfx.currentTime = 0;
       pointSfx.play().catch(() => {});
@@ -50,6 +85,7 @@
   }
 
   function playGameOverSfx() {
+    if (window.CyberSystem && window.CyberSystem.Audio && window.CyberSystem.Audio.isMuted()) return;
     if (gameoverSfx) {
       gameoverSfx.currentTime = 0;
       gameoverSfx.play().catch(() => {});
@@ -90,7 +126,7 @@
     const userPlaceholder = userBattleChoice.querySelector('.placeholder-text');
     if (userPlaceholder) {
       userPlaceholder.classList.remove('hidden');
-      userPlaceholder.textContent = 'Your choice';
+      userPlaceholder.textContent = 'READY';
     }
     userChoiceImg.classList.add('hidden');
     userChoiceImg.classList.remove('reveal');
@@ -117,10 +153,7 @@
   }
 
   function checkMatchOver() {
-    if (userScore >= roundsToWin || computerScore >= roundsToWin) {
-      return true;
-    }
-    return false;
+    return userScore >= roundsToWin || computerScore >= roundsToWin;
   }
 
   function endMatch() {
@@ -128,11 +161,17 @@
     gameOverArea.classList.remove('hidden');
     gameOverMessage.classList.remove('you-win', 'you-lose');
     if (userScore >= roundsToWin) {
-      gameOverMessage.textContent = 'You won the match!';
+      gameOverMessage.textContent = 'VICTORY ACHIEVED // HOSTILE NEUTRALIZED';
       gameOverMessage.classList.add('you-win');
+      if (window.CyberSystem && window.CyberSystem.Audio) {
+        window.CyberSystem.Audio.playSuccess();
+      }
     } else {
-      gameOverMessage.textContent = 'Computer won the match!';
+      gameOverMessage.textContent = 'NEURAL BREACH // DEFENSE OVERRIDDEN';
       gameOverMessage.classList.add('you-lose');
+      if (window.CyberSystem && window.CyberSystem.Audio) {
+        window.CyberSystem.Audio.playAlert();
+      }
     }
     playGameOverSfx();
   }
@@ -142,7 +181,8 @@
     const compWord = convertToWord(computerChoice);
 
     if (outcome === 'draw') {
-      setResultMessage(`Draw! Both chose ${userWord}.`, 'draw');
+      setResultMessage(`Draw! Both deployed ${userWord}.`, 'draw');
+      if (aiTaunt_p) aiTaunt_p.textContent = getRandomTaunt(AI_TAUNTS_DRAW);
       applyGlow(userBattleChoice, 'gray-glow');
       applyGlow(compBattleChoice, 'gray-glow');
       return;
@@ -150,21 +190,26 @@
 
     if (outcome === 'win') {
       userScore += 1;
+      currentStreak += 1;
+      if (window.CyberSystem && window.CyberSystem.Scores) {
+        window.CyberSystem.Scores.set('rps', currentStreak);
+      }
+      updateStreakUI();
+
       userScore_span.textContent = userScore;
-      setResultMessage(
-        `You win! Your ${userWord} beats Computer's ${compWord}.`,
-        'win'
-      );
+      setResultMessage(`Victory! Your ${userWord} penetrates Enemy ${compWord}.`, 'win');
+      if (aiTaunt_p) aiTaunt_p.textContent = getRandomTaunt(AI_TAUNTS_WIN);
       applyGlow(userBattleChoice, 'green-glow');
       applyGlow(compBattleChoice, 'red-glow');
       playPointSfx();
     } else {
       computerScore += 1;
+      currentStreak = 0; // Streak breaks on loss
+      updateStreakUI();
+
       computerScore_span.textContent = computerScore;
-      setResultMessage(
-        `You lose! Computer's ${compWord} beats your ${userWord}.`,
-        'loss'
-      );
+      setResultMessage(`Defeat! Enemy ${compWord} overrides your ${userWord}.`, 'loss');
+      if (aiTaunt_p) aiTaunt_p.textContent = getRandomTaunt(AI_TAUNTS_LOSS);
       applyGlow(userBattleChoice, 'red-glow');
       applyGlow(compBattleChoice, 'green-glow');
       playPointSfx();
@@ -175,7 +220,7 @@
     if (isAnimating) return;
     isAnimating = true;
     setChoicesDisabled(true);
-    setResultMessage('Computer is choosing...', '');
+    setResultMessage('Scanning quantum probability vectors...', '');
     resetBattleArea();
 
     showUserChoice(userChoice);
@@ -207,7 +252,6 @@
 
         setChoicesDisabled(false);
         isAnimating = false;
-        setResultMessage('Make your move');
       }, 400);
     }, revealDelay);
   }
@@ -221,13 +265,16 @@
     computerScore = 0;
     userScore_span.textContent = '0';
     computerScore_span.textContent = '0';
+    updateStreakUI();
+
     gameOverArea.classList.add('hidden');
     resetBattleArea();
-    setResultMessage('Make your move');
+    setResultMessage('Awaiting operative input...');
+    if (aiTaunt_p) aiTaunt_p.textContent = '> SENTINEL_AI: "TACTICAL ENGAGEMENT ENGAGED. SHOW YOUR HAND."';
     setChoicesDisabled(false);
 
     const bestOf = rounds === 1 ? 1 : rounds === 3 ? 3 : 5;
-    matchInfo.textContent = `Best of ${bestOf} — First to ${roundsToWin} wins`;
+    matchInfo.textContent = `SIMULATION // BEST OF ${bestOf} (FIRST TO ${roundsToWin})`;
 
     landingPage.classList.add('hidden');
     gameScreen.classList.remove('hidden');
@@ -236,9 +283,27 @@
   function backToLanding() {
     gameScreen.classList.add('hidden');
     landingPage.classList.remove('hidden');
+    updateStreakUI();
   }
 
   function main() {
+    updateStreakUI();
+
+    // Wire up HUD toggles
+    const audioBtn = document.getElementById('hud-audio-toggle');
+    if (audioBtn) {
+      audioBtn.addEventListener('click', () => {
+        if (window.CyberSystem) window.CyberSystem.Audio.toggleMute();
+      });
+    }
+
+    const crtBtn = document.getElementById('hud-crt-toggle');
+    if (crtBtn) {
+      crtBtn.addEventListener('click', () => {
+        if (window.CyberSystem) window.CyberSystem.CRT.toggle();
+      });
+    }
+
     document.querySelectorAll('.mode-btn').forEach((btn) => {
       btn.addEventListener('click', () => {
         const rounds = parseInt(btn.getAttribute('data-rounds'), 10);
